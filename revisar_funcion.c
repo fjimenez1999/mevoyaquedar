@@ -2,6 +2,56 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+int es_operador(char caracter){
+	int es = 0;
+	if(caracter == '*' || caracter == '/' || caracter == '+' || caracter == '-' || caracter == '(' || caracter == ')'){
+		es = 1;
+	}//tambien revisar si es sen, cos o sqrt
+	return es;
+}
+
+int es_numero(char caracter){
+	int es = 0;
+	if(caracter == '1' || caracter == '2' || caracter == '3' || caracter == '4' || caracter == '5' 
+	|| caracter == '6' || caracter == '7' || caracter == '8' || caracter == '9' || caracter == '0'){
+		es = 1;
+	}
+	return es;
+}
+
+int definir_prioridad(char operador){
+	//agregar sen,cos y sqrt
+	int prioridad;
+	if(operador == ')'){
+		prioridad = 0;
+	}else if(operador == '(' ){
+		prioridad = 1;
+	}else if(operador == '*'){
+		prioridad = 2;
+	}else if(operador == '/'){
+		prioridad = 3;
+	}else if(operador == '+'){
+		prioridad = 4;
+	}else if(operador == '-')
+		prioridad = 5;
+}
+
+char* substring(char *string, int posicion, int largo){
+   char *pointer;
+   int c;
+   pointer = malloc(largo+1);
+   
+   for (c = 0 ; c < largo ; c++)
+   {
+      *(pointer+c) = *(string+posicion-1);      
+      string++;  
+   }
+ 
+   *(pointer+c) = '\0';
+ 
+   return pointer;
+}
+
 bool revisar_funcion(char* funcion, int largo){
 	//la funcion solo puede tener 3 terminos como maximo(sumas y restas) y 3 elementos por termino(e.g multiplicaciones x*x*x o asi) e.g(3*x*x + x - 2)
 	int cantidad = revisar_cantidad_terminos(funcion,largo);
@@ -34,7 +84,7 @@ bool revisar_funcion(char* funcion, int largo){
 
 bool revisar_sintaxis(char* funcion, int largo){
 	char copia[largo];
-	strcopy(copia,funcion);
+	strcpy(copia,funcion);
 	int i;
 	if(largo != 1){
 		for(i = 0; i < largo; i++){
@@ -74,23 +124,6 @@ bool revisar_sintaxis(char* funcion, int largo){
 }
 //se debe hacer un metodo que revise los operadores de manera que a la izquierda haya un numero,x o y y a la derecha tambien
 
-bool es_operador(char caracter){
-	int es = 0;
-	if(caracter == '*' || caracter == '/' || caracter == '+' || caracter == '-' || caracter == '(' || caracter == ')'){
-		es = 1;
-	}//tambien revisar si es sen, cos o sqrt
-	return es;
-}
-
-int es_numero(char caracter){
-	int es = 0;
-	if(caracter == '1' || caracter == '2' || caracter == '3' || caracter == '4' || caracter == '5' 
-	|| caracter == '6' || caracter == '7' || caracter == '8' || caracter == '9' || caracter == '0'){
-		es = 1;
-	}
-	return es;
-}
-
 bool shuntingyard(char* funcion,char* cola[], int largo, int cantidad_elementos){
 	char** stack;
 	stack = malloc((cantidad_elementos)*sizeof(char*));
@@ -110,21 +143,7 @@ bool shuntingyard(char* funcion,char* cola[], int largo, int cantidad_elementos)
 	}
 }
 
-char* substring(char *string, int posicion, int largo){
-   char *pointer;
-   int c;
-   pointer = malloc(largo+1);
-   
-   for (c = 0 ; c < largo ; c++)
-   {
-      *(pointer+c) = *(string+posicion-1);      
-      string++;  
-   }
- 
-   *(pointer+c) = '\0';
- 
-   return pointer;
-}
+
 
  
 void separar_tokens(char* funcion, int largo, char* tokens[]){
@@ -135,28 +154,12 @@ void separar_tokens(char* funcion, int largo, char* tokens[]){
 	}
 }
 
-int definir_prioridad(char operador){
-	//agregar sen,cos y sqrt
-	int prioridad;
-	if(operador == ')'){
-		prioridad = 0;
-	}else if(operador == '(' ){
-		prioridad = 1;
-	}else if(operador == '*'){
-		prioridad = 2;
-	}else if(operador == '/'){
-		prioridad = 3;
-	}else if(operador == '+'){
-		prioridad = 4;
-	}else if(operador == '-')
-		prioridad = 5;
-}
+
 //revisa en los caracteres siguientes al primer numero para ver si es un numero valido
 //devuelve la posicion final del numero
 int es_numero_valido(char* funcion, int largo, int posicion){
 	int i;
 	bool termina =	false;
-	int posicion;
 	for(i = posicion; i < largo; i++){
 		if(es_numero(funcion[i]) && i == largo-1){
 			termina = true;
@@ -204,8 +207,8 @@ int cantidad_elementos_total(char* funcion, int largo){
 	int cantidad = 0;
 	int i;
 	for(i = 0; i < largo; i++){
-			if(termino[i] == '*' || termino[i] == '/' || termino[i] == '+'|| termino[i] == '-'){
-				cantidad++
+			if(funcion[i] == '*' || funcion[i] == '/' || funcion[i] == '+'|| funcion[i] == '-'){
+				cantidad++;
 			}
 	}
 	return cantidad+1;
@@ -268,8 +271,9 @@ int main(){
 	}
 	
 	shuntingyard(str,cola,strlen(str),cantidad_elementos);
-	int i;
-	for(i = 0; i < )
+	for(i = 0; i < cantidad_elementos; i++){
+		printf("%s\n",cola[i]);
+	}
 	/*separar_terminos(str,12,terminos);
 	for(i = 0; i<cantidad; i++){
 		printf("length: %d, ",strlen(terminos[i]));
