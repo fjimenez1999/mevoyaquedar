@@ -51,6 +51,28 @@ char* substring(char *string, int posicion, int largo){
  
    return pointer;
 }
+int es_numero_valido(char* funcion, int largo, int posicion){
+	int i;
+	bool termina =	false;
+	for(i = posicion; i < largo; i++){
+		if(es_numero(funcion[i]) && i == largo-1){
+			termina = true;
+			posicion = i;
+		}else if(es_operador(funcion[i])){
+			termina = true;
+			posicion = i;
+			break;
+		}else if(es_numero(funcion[i])){
+			continue;
+		}else{
+			break;
+		}
+	}
+	if(termina){
+		return posicion;
+	}
+	return -1;
+}
 
 bool revisar_funcion(char* funcion, int largo){
 	//la funcion solo puede tener 3 terminos como maximo(sumas y restas) y 3 elementos por termino(e.g multiplicaciones x*x*x o asi) e.g(3*x*x + x - 2)
@@ -144,8 +166,6 @@ bool shuntingyard(char* funcion,char* cola[], int largo, int cantidad_elementos)
 }
 
 
-
- 
 void separar_tokens(char* funcion, int largo, char* tokens[]){
 	//usar para implementar sen cos y numeros de mas de un caracter
 	int i;
@@ -157,28 +177,7 @@ void separar_tokens(char* funcion, int largo, char* tokens[]){
 
 //revisa en los caracteres siguientes al primer numero para ver si es un numero valido
 //devuelve la posicion final del numero
-int es_numero_valido(char* funcion, int largo, int posicion){
-	int i;
-	bool termina =	false;
-	for(i = posicion; i < largo; i++){
-		if(es_numero(funcion[i]) && i == largo-1){
-			termina = true;
-			posicion = i;
-		}else if(es_operador(funcion[i])){
-			termina = true;
-			posicion = i;
-			break;
-		}else if(es_numero(funcion[i])){
-			continue;
-		}else{
-			break;
-		}
-	}
-	if(termina){
-		return posicion;
-	}
-	return -1;
-}
+
 
 int revisar_cantidad_terminos(char* funcion, int largo){ //deberia revisar que tenga 3 terminos o meno aka 2 +/- o menos
 	int cantidad = 0;
