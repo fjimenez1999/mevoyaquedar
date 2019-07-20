@@ -19,6 +19,29 @@ int es_numero(char caracter){
 	return es;
 }
 
+int revisar_cantidad_terminos(char* funcion, int largo){ //deberia revisar que tenga 3 terminos o meno aka 2 +/- o menos
+	int cantidad = 0;
+	int i;
+	for(i= 0; i < largo; i++){
+			if(funcion[i] == '+' || funcion[i] == '-'){
+				cantidad++;
+			}
+	}
+	return cantidad+1;
+}
+
+void separar_terminos(char* funcion, int largo,char* strings[]){//separa los terminos y los mete en el arreglo de strings, probablemente no se necesite
+	char copia[largo];
+	strcpy(copia,funcion); //strlcopy es mejor
+	char* token = strtok(copia," + - ");
+	int pos = 0;
+	while(token != NULL){
+		strcpy(strings[pos],token);
+		token = strtok(NULL, " + - ");
+		pos++;
+	}
+}
+
 int definir_prioridad(char operador){
 	//agregar sen,cos y sqrt
 	int prioridad;
@@ -146,6 +169,7 @@ bool revisar_sintaxis(char* funcion, int largo){
 }
 //se debe hacer un metodo que revise los operadores de manera que a la izquierda haya un numero,x o y y a la derecha tambien
 
+
 bool shuntingyard(char* funcion,char* cola[], int largo, int cantidad_elementos){
 	char** stack;
 	stack = malloc((cantidad_elementos)*sizeof(char*));
@@ -153,11 +177,13 @@ bool shuntingyard(char* funcion,char* cola[], int largo, int cantidad_elementos)
 	for(i = 0; i < cantidad_elementos; i++){
 		stack[i] = malloc(250*sizeof(char));
 	}
+	int cola_cola = 0;
 	for(i = 0; i < largo; i++){
 		if(es_numero(funcion[i])){ //cambiar a es_numero(tokens[i])
 			int final = es_numero_valido(funcion,largo,i);
 			int sublargo = final-i;
 			char* subs = substring(funcion,i,sublargo);
+			cola[cola_cola] = subs;
 			printf("%s\n",subs);
 		}else if(es_operador(funcion[i])){//cambiar a es_operador(tokens[i])
 
@@ -179,16 +205,7 @@ void separar_tokens(char* funcion, int largo, char* tokens[]){
 //devuelve la posicion final del numero
 
 
-int revisar_cantidad_terminos(char* funcion, int largo){ //deberia revisar que tenga 3 terminos o meno aka 2 +/- o menos
-	int cantidad = 0;
-	int i;
-	for(i= 0; i < largo; i++){
-			if(funcion[i] == '+' || funcion[i] == '-'){
-				cantidad++;
-			}
-	}
-	return cantidad+1;
-}
+
 
 int revisar_cantidad_elementos(char* termino, int largo){
 	int cantidad = 0;
@@ -243,17 +260,7 @@ void id_operaciones(char* funcion, int largo,int cantidad_op, char* operaciones,
 		}
 	}
 }
-void separar_terminos(char* funcion, int largo,char* strings[]){//separa los terminos y los mete en el arreglo de strings, probablemente no se necesite
-	char copia[largo];
-	strcpy(copia,funcion); //strlcopy es mejor
-	char* token = strtok(copia," + - ");
-	int pos = 0;
-	while(token != NULL){
-		strcpy(strings[pos],token);
-		token = strtok(NULL, " + - ");
-		pos++;
-	}
-}
+
 
 void separar_elementos(char* strings, int largo){ // probablemente no sea necesario separar los elementos de cada termino
 	//
