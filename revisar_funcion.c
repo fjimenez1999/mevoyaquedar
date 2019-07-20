@@ -177,15 +177,16 @@ bool shuntingyard(char* funcion,char* cola[], int largo, int cantidad_elementos)
 	for(i = 0; i < cantidad_elementos; i++){
 		stack[i] = malloc(250*sizeof(char));
 	}*/
+	int i;
 	int cola_cola = 0;
 	for(i = 0; i < largo; i++){
 		if(es_numero(funcion[i])){ //cambiar a es_numero(tokens[i])
 			int final = es_numero_valido(funcion,largo,i);
 			int sublargo = final-i;
-			char* subs = substring(funcion,i,sublargo);
-			cola[cola_cola] = subs;
+			//char* subs = substring(funcion,i,sublargo);
+			cola[cola_cola] = "hola";
 			cola_cola++;
-			printf("%s\n",subs);
+			printf("%s\n","hola");
 		}else if(es_operador(funcion[i])){//cambiar a es_operador(tokens[i])
 
 		}
