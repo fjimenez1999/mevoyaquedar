@@ -171,12 +171,12 @@ bool revisar_sintaxis(char* funcion, int largo){
 
 
 bool shuntingyard(char* funcion,char* cola[], int largo, int cantidad_elementos){
-	char** stack;
+	/*char** stack;
 	stack = malloc((cantidad_elementos)*sizeof(char*));
 	int i;
 	for(i = 0; i < cantidad_elementos; i++){
 		stack[i] = malloc(250*sizeof(char));
-	}
+	}*/
 	int cola_cola = 0;
 	for(i = 0; i < largo; i++){
 		if(es_numero(funcion[i])){ //cambiar a es_numero(tokens[i])
@@ -184,6 +184,7 @@ bool shuntingyard(char* funcion,char* cola[], int largo, int cantidad_elementos)
 			int sublargo = final-i;
 			char* subs = substring(funcion,i,sublargo);
 			cola[cola_cola] = subs;
+			cola_cola++;
 			printf("%s\n",subs);
 		}else if(es_operador(funcion[i])){//cambiar a es_operador(tokens[i])
 
@@ -277,9 +278,9 @@ int main(){
 	}
 	
 	shuntingyard(str,cola,strlen(str),cantidad_elementos);
-	for(i = 0; i < cantidad_elementos; i++){
+	/*for(i = 0; i < cantidad_elementos; i++){
 		printf("%s\n",cola[i]);
-	}
+	}*
 	/*separar_terminos(str,12,terminos);
 	for(i = 0; i<cantidad; i++){
 		printf("length: %d, ",strlen(terminos[i]));
